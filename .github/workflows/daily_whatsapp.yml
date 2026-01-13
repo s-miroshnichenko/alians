@@ -2,8 +2,8 @@ name: Daily WhatsApp Sender
 
 on:
   schedule:
-    # Run at 02:25 UTC (which is 06:25 AM UTC+4)
-    - cron: '25 2 * * *'
+    # Run at 02:29 UTC (which is 06:29 AM UTC+4)
+    - cron: '29 2 * * *'
   workflow_dispatch: # Allow manual trigger button
 
 jobs:
