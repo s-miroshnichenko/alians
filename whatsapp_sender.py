@@ -16,7 +16,7 @@ VERSION = "v21.0"
 TEMPLATE_NAME = "contract_ru"
 ADMIN_TEMPLATE_NAME = "messages_sent"
 ADMIN_ERROR_TEMPLATE = "admin_alert"
-SHEET_ID = '1dKKrxe3oqX9mpEKU9PZFO947ZaELWfMqQcFsU0MgdY'
+SHEET_ID = '1dKKrxe3oqX9mpEKU9PZFO947ZaELaWfMqQcFsU0MgdY'
 EXPORT_URL = f'https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?format=xlsx'
 ADMIN_PHONE_NUMBER = "789969129844"
 
