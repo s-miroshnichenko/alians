@@ -8,8 +8,8 @@ def main():
     
     while True:
         now = datetime.now()
-        # Set target to 9:00 AM today
-        target = now.replace(hour=9, minute=0, second=0, microsecond=0)
+        # Set target to 6:15 AM today
+        target = now.replace(hour=6, minute=15, second=0, microsecond=0)
         
         # If 9:00 AM has already passed today, schedule for tomorrow
         if now >= target:
