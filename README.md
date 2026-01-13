@@ -46,8 +46,9 @@ git push -u origin main
 ├── .github/
 │   └── workflows/
 │       └── daily_whatsapp.yml    # GitHub Actions workflow
-├── daily_contract_notifier.py    # Основная логика (с расписанием для сервера)
-├── run_job.py                    # Точка входа для GitHub Actions
+├── whatsapp_sender.py            # Основная логика отправки (используется обоими режимами)
+├── daily_contract_notifier.py    # Запуск с расписанием (для сервера)
+├── run_job.py                    # Разовый запуск (для GitHub Actions)
 ├── requirements.txt              # Зависимости Python
 ├── DEPLOY_README.md             # Инструкции для деплоя на VPS
 └── README.md                    # Этот файл
@@ -85,21 +86,9 @@ git push -u origin main
 
 **Важно:** Формат даты должен быть `ДД.ММ.ГГГГ`
 
-## 🖥️ Запуск на собственном сервере
-
-См. подробные инструкции в [DEPLOY_README.md](DEPLOY_README.md)
-
-Краткая версия:
-```bash
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-python3 daily_contract_notifier.py
-```
-
 ## ⚙️ Конфигурация
 
-Основные параметры в `daily_contract_notifier.py`:
+Основные параметры в `whatsapp_sender.py`:
 
 - `SHEET_ID` - ID вашей Google таблицы
 - `TEMPLATE_NAME` - Имя шаблона для клиентов
