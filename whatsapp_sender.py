@@ -8,10 +8,23 @@ import ssl
 import os
 from datetime import datetime, timedelta
 
+# Load environment variables from .env file for local development
+try:
+    from dotenv import load_dotenv
+    from pathlib import Path
+    env_path = Path(__file__).parent / '.env'
+    load_dotenv(dotenv_path=env_path)  # Load .env file if it exists
+except ImportError:
+    pass  # dotenv not installed, skip (fine for GitHub Actions)
+
 # Configuration
-# Prefer Environment Variables (for GitHub Actions), fallback to hardcoded (for local)
-ACCESS_TOKEN = os.getenv("ACCESS_TOKEN", "EAATG3oWpW0IBQfs879FBKjZBWKL2CtN4ZB8PCJdZBCxVlmptNZAXUfGjsJ8K4GrHzc1ujdbYhOz8Nz60N3NDXrTQJ0INU6SRcOc7HSjZC7iZCdMpEy9lWz7AQJRSHdzpZAOQgHnQrK4W94ZAEbwMJAvq5jpgSnroEoSVzLgQxLzVHdCNDBzey94yXQguz3vPygKD44rCGvq32WStRPj54ZCfz3PxjH2k7keriaO8EFPOzx9CnEkLlawXPXw9r7NOeb9ORDeyfE0TQl8caQasmCb6VhAv1")
+# Use Environment Variables (for GitHub Actions)
+# For local testing, create a .env file with META_TOKEN and PHONE_NUMBER_ID
+META_TOKEN = os.getenv("META_TOKEN")
 PHONE_NUMBER_ID = os.getenv("PHONE_NUMBER_ID", "957011204161290")
+
+if not META_TOKEN:
+    raise ValueError("META_TOKEN environment variable is required. For local testing, create a .env file with META_TOKEN=your_token")
 VERSION = "v21.0"
 TEMPLATE_NAME = "contract_ru"
 ADMIN_TEMPLATE_NAME = "messages_sent"
@@ -24,7 +37,7 @@ def send_template_message(recipient, name, date_str, contract_num, description):
     """Send WhatsApp template message to a client"""
     url = f"https://graph.facebook.com/{VERSION}/{PHONE_NUMBER_ID}/messages"
     headers = {
-        "Authorization": f"Bearer {ACCESS_TOKEN}",
+        "Authorization": f"Bearer {META_TOKEN}",
         "Content-Type": "application/json"
     }
     
@@ -47,19 +60,23 @@ def send_template_message(recipient, name, date_str, contract_num, description):
                     "parameters": [
                         {
                             "type": "text",
-                            "text": str(name)     # {{1}}
+                            "parameter_name": "name",
+                            "text": str(name)
                         },
                         {
                             "type": "text",
-                            "text": str(date_str) # {{2}}
+                            "parameter_name": "date",
+                            "text": str(date_str)
                         },
                         {
                             "type": "text",
-                            "text": str(contract_num) # {{3}}
+                            "parameter_name": "contract_nubmer",
+                            "text": str(contract_num)
                         },
                         {
                             "type": "text",
-                            "text": str(description) # {{4}}
+                            "parameter_name": "contract_description",
+                            "text": str(description)
                         }
                     ]
                 }
@@ -84,7 +101,7 @@ def send_admin_notification(names_list):
     """Send success notification to admin"""
     url = f"https://graph.facebook.com/{VERSION}/{PHONE_NUMBER_ID}/messages"
     headers = {
-        "Authorization": f"Bearer {ACCESS_TOKEN}",
+        "Authorization": f"Bearer {META_TOKEN}",
         "Content-Type": "application/json"
     }
     
@@ -106,7 +123,8 @@ def send_admin_notification(names_list):
                     "parameters": [
                         {
                             "type": "text",
-                            "text": names_str # {{1}} - names
+                            "parameter_name": "names",
+                            "text": names_str
                         }
                     ]
                 }
@@ -127,7 +145,7 @@ def send_error_notification(errors_list):
     """Send error notification to admin"""
     url = f"https://graph.facebook.com/{VERSION}/{PHONE_NUMBER_ID}/messages"
     headers = {
-        "Authorization": f"Bearer {ACCESS_TOKEN}",
+        "Authorization": f"Bearer {META_TOKEN}",
         "Content-Type": "application/json"
     }
     
@@ -152,7 +170,7 @@ def send_error_notification(errors_list):
                     "parameters": [
                         {
                             "type": "text",
-                            "text": error_str # {{1}} - error details
+                            "text": error_str # {{1}} - error details (Positional confirmed)
                         }
                     ]
                 }

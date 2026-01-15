@@ -2,8 +2,8 @@ name: Daily WhatsApp Sender
 
 on:
   schedule:
-    # Run at 00:00 UTC (which is 04:00 AM UTC+4)
-    - cron: '0 0 * * *'
+    # Run at 08:53 UTC (which is 12:53 PM UTC+4)
+    - cron: '53 8 * * *'
   workflow_dispatch: # Allow manual trigger button
 
 jobs:
@@ -25,7 +25,7 @@ jobs:
 
     - name: Run Sender Script
       env:
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        META_TOKEN: ${{ secrets.META_TOKEN }}
         PHONE_NUMBER_ID: ${{ secrets.PHONE_NUMBER_ID }}
       run: |
         python run_job.py
